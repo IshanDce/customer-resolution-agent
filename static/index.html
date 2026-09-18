@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroResolve AI — Airline Disruption Resolution Agent</title>
+  <meta name="description"
+    content="Autonomous, empathetic, and policy-grounded customer resolution agent for airline flight cancellations and delays.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Top Navigation & Global Header -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">AeroResolve AI</h1>
+          <div class="brand-subtitle">Assignment 3: Customer-Facing Resolution Agent</div>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="date-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Operational Date: Wednesday, 23 September 2026</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="btn-open-ticket" class="btn-header" title="View your support ticket thread">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>My Ticket</span>
+        </button>
+        <button id="btn-open-admin" class="btn-header" title="Open Admin Panel">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"></path>
+            <line x1="12" y1="8" x2="12" y2="14"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span>Admin Panel</span>
+        </button>
+        <button id="btn-open-custom-modal" class="btn-header">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="8.5" cy="7.5" r="4"></circle>
+            <line x1="20" y1="8" x2="20" y2="14"></line>
+            <line x1="23" y1="11" x2="17" y2="11"></line>
+          </svg>
+          <span>+ Custom Passenger / Data</span>
+        </button>
+        <button id="btn-reset" class="btn-header" title="Reset to Initial Data Pack">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          <span>Reset Demo</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace Layout -->
+    <main class="workspace-grid">
+      <!-- COLUMN 1: Scenarios, Passenger Passport & Flight Radar -->
+      <aside class="column">
+        <!-- Scenario Switcher -->
+        <div class="glass-card">
+          <div class="card-header">
+            <div class="card-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-sky)" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+              </svg>
+              <span>Assignment Scenarios</span>
+            </div>
+            <span style="font-size:0.72rem; color:var(--text-dim);">Select Case</span>
+          </div>
+          <div id="scenario-selector" class="scenario-selector">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Passenger Passport -->
+        <div id="customer-passport" class="glass-card">
+          <!-- Dynamically populated -->
+        </div>
+      </aside>
+
+      <!-- COLUMN 2: Empathetic AI Resolution Chat -->
+      <section class="chat-column">
+        <div class="chat-header">
+          <div class="chat-agent-info">
+            <div class="agent-avatar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="agent-name">AeroResolve Autonomous Agent</div>
+              <div class="agent-status">
+                <span class="pulse-dot"></span>
+                <span>Active • Customer Support</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Messages Feed -->
+        <div id="chat-feed" class="chat-feed">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Quick Response Suggestion Chips -->
+        <div id="quick-chips" class="quick-chips-container">
+          <!-- Dynamically populated per scenario -->
+        </div>
+
+        <!-- Chat Input Bar -->
+        <div class="chat-input-bar">
+          <input type="text" id="chat-input" class="chat-input"
+            placeholder="Type your message as the customer or click a prompt above..." autocomplete="off" />
+          <button id="btn-send" class="btn-send" title="Send message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- COLUMN 3: Customer Support Ticket -->
+      <aside class="column">
+        <div id="customer-ticket-card" class="glass-card" style="flex:1;">
+          <!-- Dynamically populated -->
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- MODAL: Custom Passenger / Scenario Builder -->
+  <div id="modal-custom-passenger" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 style="font-family:var(--font-display); font-size:1.15rem; color:#fff;">+ Add Custom Passenger Case</h2>
+        <button id="btn-close-custom-modal"
+          style="background:none; border:none; color:var(--text-dim); font-size:1.4rem; cursor:pointer;">&times;</button>
+      </div>
+      <p style="font-size:0.78rem; color:var(--text-muted);">
+        Add novel customer data or flight disruptions to test how the agent adapts to returning users and new cases.
+      </p>
+
+      <form id="form-custom-passenger">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Passenger Name</label>
+            <input type="text" id="cust-name" class="form-control" placeholder="e.g. Rahul Sharma" required>
+          </div>
+          <div class="form-group">
+            <label>Booking Reference (PNR)</label>
+            <input type="text" id="cust-pnr" class="form-control" placeholder="e.g. RS8841" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Loyalty Tier</label>
+            <select id="cust-tier" class="form-control">
+              <option value="Member">Regular Member</option>
+              <option value="Silver">Silver</option>
+              <option value="Gold">Gold (Priority Rebook)</option>
+              <option value="Platinum">Platinum (Priority Rebook)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Contact Phone</label>
+            <input type="text" id="cust-phone" class="form-control" value="+91-9876543210">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="cust-email" class="form-control" placeholder="passenger@example.com" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Flight Number</label>
+            <input type="text" id="cust-flight" class="form-control" value="SK-502">
+          </div>
+          <div class="form-group">
+            <label>Route</label>
+            <input type="text" id="cust-route" class="form-control" value="Delhi → Mumbai">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Disruption Status</label>
+            <select id="cust-status" class="form-control">
+              <option value="Cancelled (operational reasons)">Cancelled (operational reasons)</option>
+              <option value="Delayed 2h (new departure 14:00)">Delayed 2h (<3h: ₹500 voucher)</option>
+              <option value="Delayed 4h (new departure 16:00)">Delayed 4h (>3h: Voucher + Lounge)</option>
+              <option value="Delayed 7h (new departure 19:00)">Delayed 7h (>5h: Voucher + Day Hotel)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Delay Hours (if applicable)</label>
+            <input type="number" id="cust-delay-hours" class="form-control" value="0" step="0.5">
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+          <button type="button" onclick="document.getElementById('modal-custom-passenger').classList.remove('active')"
+            class="btn-header">Cancel</button>
+          <button type="submit" class="btn-header btn-primary">Create & Load Passenger</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL: Support Ticket Management -->
+  <div id="admin-panel" class="admin-panel-overlay">
+    <div class="admin-panel-box">
+      <div class="admin-panel-header">
+        <div>
+          <h2 style="font-family:var(--font-display); font-size:1.15rem; color:#fff;">Support Ticket Admin Panel</h2>
+          <p style="font-size:0.78rem; color:var(--text-muted);">View, manage, and respond to customer complaints as
+            support tickets.</p>
+        </div>
+        <button id="btn-close-admin" class="btn-header">✕ Close Panel</button>
+      </div>
+      <div class="admin-panel-body">
+        <aside class="admin-ticket-list-col">
+          <div id="admin-ticket-list" class="admin-ticket-list">
+            <!-- Dynamically populated -->
+          </div>
+        </aside>
+        <section class="admin-ticket-detail-col">
+          <div id="admin-ticket-detail" class="admin-ticket-detail">
+            <!-- Dynamically populated -->
+          </div>
+          <form id="form-admin-reply" class="admin-reply-form">
+            <input type="hidden" id="admin-reply-ticket-id">
+            <textarea id="admin-reply-input" class="admin-reply-input"
+              placeholder="Write a response to this customer..." rows="3"></textarea>
+            <div class="admin-reply-actions">
+              <label class="admin-resolve-toggle">
+                <input type="checkbox" id="admin-reply-resolve"> Mark as resolved
+              </label>
+              <button type="submit" class="btn-header btn-primary">Send Response</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Customer Support Ticket Thread -->
+  <div id="modal-customer-ticket" class="modal-overlay">
+    <div class="modal-box ticket-modal-box">
+      <div class="modal-header">
+        <h2 style="font-family:var(--font-display); font-size:1.15rem; color:#fff;">My Support Ticket</h2>
+        <button id="btn-close-ticket"
+          style="background:none; border:none; color:var(--text-dim); font-size:1.4rem; cursor:pointer;">&times;</button>
+      </div>
+      <div id="customer-ticket-detail" class="customer-ticket-detail">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/static/js/app.js"></script>
+</body>
+
+</html>
