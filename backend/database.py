@@ -61,8 +61,9 @@ class Database:
             "action_cards": action_cards or []
         })
 
-        # Keep the per-PNR support ticket in sync with the conversation.
-        ticket = self.ensure_ticket(pnr_upper)
+        # Only sync ticket state if this PNR already has an escalation-linked ticket.
+        # Normal conversations do NOT create tickets — only escalations do.
+        ticket = self.tickets.get(pnr_upper)
         if ticket:
             ticket["updated_at"] = self._now()
             # A new customer message reopens a ticket that an admin already answered.
@@ -73,6 +74,7 @@ class Database:
         self.escalations.append(ticket)
         pnr = ticket.get("data", {}).get("pnr")
         if pnr:
+            # Escalation is the ONLY trigger that creates an admin-panel ticket.
             t = self.ensure_ticket(pnr)
             if t:
                 esc_id = ticket.get("data", {}).get("ticket_id")
@@ -170,21 +172,21 @@ class Database:
         return ticket
 
     def list_tickets(self) -> List[Dict[str, Any]]:
-        """Return all tickets for customers with conversation history or an escalation."""
-        active_pnrs = set()
-        for pnr, history in self.conversation_histories.items():
-            if history:
-                active_pnrs.add(pnr.upper())
-
+        """Return only tickets that have at least one escalation (prohibited action triggered).
+        Normal conversations without escalations are NOT shown in the admin panel.
+        """
+        # Ensure tickets exist for any PNR that has an escalation.
         for escalation in self.escalations:
             pnr = escalation.get("data", {}).get("pnr")
             if pnr:
-                active_pnrs.add(pnr.upper())
+                self.ensure_ticket(pnr.upper())
 
-        for pnr in active_pnrs:
-            self.ensure_ticket(pnr)
-
-        return [self.tickets[pnr] for pnr in sorted(self.tickets.keys())]
+        # Only surface tickets that are escalation-linked.
+        return [
+            self.tickets[pnr]
+            for pnr in sorted(self.tickets.keys())
+            if self.tickets[pnr].get("escalation_ids")
+        ]
 
     def get_ticket(self, ticket_id: str) -> Optional[Dict[str, Any]]:
         """Look up a ticket by its ticket_id or by PNR."""

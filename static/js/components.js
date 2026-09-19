@@ -435,9 +435,9 @@ export const components = {
         </div>
         <div class="customer-ticket-card-body">
           <div class="customer-ticket-queue">
-            <div class="queue-icon">📨</div>
-            <div class="queue-title">Your message is sent to the admin</div>
-            <div class="queue-sub">Please wait for the admin to respond to your ticket.</div>
+            <div class="queue-icon">✅</div>
+            <div class="queue-title">No escalation raised</div>
+            <div class="queue-sub">Your conversation is being handled by the AI agent. A ticket is only created if your case needs supervisor attention.</div>
           </div>
         </div>
       `;

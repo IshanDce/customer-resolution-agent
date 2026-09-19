@@ -2,8 +2,8 @@
  * AeroResolve AI - Core Application Controller
  */
 
-import { api } from './api.js';
-import { components } from './components.js';
+import { api } from './api.js?v=2';
+import { components } from './components.js?v=2';
 
 class AppController {
   constructor() {
@@ -138,7 +138,8 @@ class AppController {
     const container = document.getElementById('customer-ticket-card');
     try {
       const tickets = await api.getTickets('customer', this.currentPnr);
-      if (!tickets || tickets.length === 0) {
+      // Only show the ticket panel if the ticket has real escalations linked
+      if (!tickets || tickets.length === 0 || !tickets[0].escalation_ids?.length) {
         container.innerHTML = components.renderCustomerTicketCard(null);
         return;
       }
