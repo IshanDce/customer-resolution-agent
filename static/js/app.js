@@ -2,8 +2,8 @@
  * AeroResolve AI - Core Application Controller
  */
 
-import { api } from './api.js?v=2';
-import { components } from './components.js?v=2';
+import { api } from './api.js?v=3';
+import { components } from './components.js?v=3';
 
 class AppController {
   constructor() {

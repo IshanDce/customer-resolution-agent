@@ -65,4 +65,5 @@ def ticket_summary(ticket: Dict[str, Any]) -> Dict[str, Any]:
         "status": ticket.get("status", "open"),
         "created_at": ticket.get("created_at"),
         "updated_at": ticket.get("updated_at"),
+        "escalation_ids": ticket.get("escalation_ids", []),
     }

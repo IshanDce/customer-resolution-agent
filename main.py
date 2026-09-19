@@ -34,6 +34,19 @@ STATIC_DIR = BASE_DIR / "static"
 
 app = FastAPI(title="AeroResolve AI", version="1.0.0")
 app.include_router(ticket_router)
+
+
+@app.middleware("http")
+async def no_cache_static(request, call_next):
+    """Prevent browsers from caching JS/CSS so updated code is always served."""
+    response = await call_next(request)
+    path = request.url.path
+    if path.startswith("/static/") and (path.endswith(".js") or path.endswith(".css")):
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+    return response
+
+
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 
