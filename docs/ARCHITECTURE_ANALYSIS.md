@@ -7,7 +7,7 @@
 
 ## 1. Project Overview
 
-AeroResolve AI is a single-page web application backed by a FastAPI service that simulates an autonomous, policy-grounded airline disruption resolution agent named **Maya**. The agent handles flight cancellations and delays for pre-seeded assignment customers and custom passengers, and an **Admin Panel** treats each customer complaint as a support ticket that an admin can answer.
+AeroResolve AI is a single-page web application backed by a FastAPI service that simulates an autonomous, policy-grounded airline disruption resolution agent named **Ishan**. The agent handles flight cancellations and delays for pre-seeded assignment customers and custom passengers, and an **Admin Panel** treats each customer complaint as a support ticket that an admin can answer.
 
 **Core technologies**
 

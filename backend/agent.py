@@ -57,7 +57,7 @@ def _fmt_sample_conversations() -> str:
         lines.append(
             f"EXAMPLE {i}:\n"
             f"  Passenger: {ex['customer']}\n"
-            f"  Agent (Maya): {ex['agent']}"
+            f"  Agent (Ishan): {ex['agent']}"
         )
     return "\n\n".join(lines)
 
@@ -115,11 +115,11 @@ def build_system_prompt(
 
     history_lines = []
     for h in history[-8:]:
-        role = "Passenger" if h["role"] == "user" else "Maya"
+        role = "Passenger" if h["role"] == "user" else "Ishan"
         history_lines.append(f"  {role}: {h['content']}")
     history_text = "\n".join(history_lines) if history_lines else "  (Start of conversation)"
 
-    return f"""You are Maya, a Senior Customer Resolution Specialist at SkyKonnect Airlines.
+    return f"""You are Ishan, a Senior Customer Resolution Specialist at SkyKonnect Airlines.
 You are warm, empathetic, highly professional, and speak exactly like a real experienced human agent — never robotic, never scripted.
 
 TODAY: {OPERATIONAL_DATE}
@@ -211,12 +211,12 @@ STEP 3: ADDRESS BOTH WHAT THEY FEEL AND WHAT THEY NEED.
   - If a request is blocked by policy, be kind and redirect to what IS possible.
 
 === ABSOLUTE RULES ===
-1. Write AS Maya, first person. Conversational, warm — like a real human agent on phone/chat.
+1. Write AS Ishan, first person. Conversational, warm — like a real human agent on phone/chat.
 2. 2 to 4 short paragraphs. NO bullet points. Flowing natural sentences only.
 3. Never say "I executed a tool", "per my training", "data pack", "system", "algorithm."
 4. Mention voucher/ticket codes naturally inline (e.g. "Your lounge pass LNG-XXXXX is waiting at the gate").
 5. If escalating, mention ticket reference and that a specialist will reach out directly.
-6. Do NOT echo "Maya:" or "Agent:" at the start — just respond directly.
+6. Do NOT echo "Ishan:" or "Agent:" at the start — just respond directly.
 7. If the customer's message is a simple greeting or opener, warmly introduce yourself and the situation — do NOT take any action yet, just listen and invite them to share what they need.
 8. STRICT RELEVANCE: ONLY respond to what the passenger has ACTUALLY said in the chat history. NEVER hallucinate or assume they asked for hotel rooms, fare waivers, refunds, or cabin upgrades if they did NOT bring it up. If they make a casual remark (e.g. "i am very down to earth", "how is your day?"), respond genuinely to that remark with warmth, acknowledge their flight status briefly, and ask how you can help them today.
 """
@@ -319,7 +319,7 @@ class ResolutionAgent:
             system_prompt = build_system_prompt(
                 customer, history, tool_executions, guardrails, sentiment
             )
-            user_turn = f"Passenger: {user_message}\n\nMaya:"
+            user_turn = f"Passenger: {user_message}\n\nIshan:"
 
             last_err = None
             for attempt in range(max_retries):
@@ -334,9 +334,9 @@ class ResolutionAgent:
                         ),
                     )
                     text = response.text.strip()
-                    # Strip accidental "Maya:" echo at start
+                    # Strip accidental "Ishan:" echo at start
                     text = re.sub(
-                        r"^(Maya|Agent)\s*[\(\w\s\)]*:\s*",
+                        r"^(Ishan|Agent)\s*[\(\w\s\)]*:\s*",
                         "",
                         text,
                         flags=re.IGNORECASE,
@@ -630,7 +630,7 @@ class ResolutionAgent:
 
                 # Day-use transit hotel is granted for >5h delays. When the customer
                 # asks for a full overnight stay, we still arrange the day room and
-                # let Maya clarify that it covers only the delayed hours.
+                # let Ishan clarify that it covers only the delayed hours.
                 if comp.get("hotel_eligible"):
                     if "arrange_day_hotel" not in already:
                         add(self.tools.arrange_day_hotel(pnr, name, flight, delay_h, revised_dep))
